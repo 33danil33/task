@@ -1,51 +1,42 @@
-# 1
-# num_str = input("Введите числа через пробел: ")
-# num_list = num_str.split()
-# num = [int(num) for num in num_list]
-# sum_of_num = sum(num)
-# print("Сумма чисел:", sum_of_num)
+import java.util.*;
 
-# 2
-# def front_x(words):
-#     x_words = []
-#     other_words = []
-#     for word in words:
-#         if word.startswith("x"):
-#             x_words.append(word)
-#         else:
-#             other_words.append(word)
-#     x_words.sort()
-#     other_words.sort()
-#     sorted_words = x_words + other_words 
-#     return sorted_words
-# words = ['mix', 'extra', '', 'x-files', 'xyz', 'xapple', 'apple']
-# sorted_words = front_x(words)
-# print(sorted_words)
+public class PhoneBook {
+    private HashMap<String, List<String>> phoneBook;
 
-# 3
-# def count_donuts(num_donuts):
-#     if num_donuts <= 9:
-#         return f"Всего пончиков: {num_donuts}"
-#     else:
-#         return "Всего пончиков: много"
-# num_donuts = int(input("Введите количество пончиков: "))
-# result = count_donuts(num_donuts)
-# print(result)
+    public PhoneBook() {
+        phoneBook = new HashMap<>();
+    }
 
-# 4
-# n = int(input("Введите натуральное число n: "))
-# sum_num = 0
-# for num in range(n + 1):
-#     if num % 5 == 0 and num % 3 != 0:
-#         sum_num += num
-# print("Сумма чисел от 0 до", n, "включительно, которые делятся на 5 без остатка, но на 3 делятся с остатком:", sum_num)
+    public void addContact(String name, String phoneNumber) {
+        if (phoneBook.containsKey(name)) {
+            List<String> phoneNumbers = phoneBook.get(name);
+            phoneNumbers.add(phoneNumber);
+        } else {
+            List<String> phoneNumbers = new ArrayList<>();
+            phoneNumbers.add(phoneNumber);
+            phoneBook.put(name, phoneNumbers);
+        }
+    }
 
-# 5
-def get_substring(str):
-    if len(str) < 2:
-        return ""
-    else:
-        return str[:2] + str[-2:]
-input_str = input("Введите строку: ")
-result = get_substring(input_str)
-print(result)
+    public void printSortedByNumberOfPhones() {
+        List<Map.Entry<String, List<String>>> sortedList = new ArrayList<>(phoneBook.entrySet());
+        sortedList.sort((entry1, entry2) -> entry2.getValue().size() - entry1.getValue().size());
+
+        for (Map.Entry<String, List<String>> entry : sortedList) {
+            String name = entry.getKey();
+            List<String> phoneNumbers = entry.getValue();
+            System.out.println(name + ": " + phoneNumbers);
+        }
+    }
+
+    public static void main(String[] args) {
+        PhoneBook phoneBook = new PhoneBook();
+
+        phoneBook.addContact("John", "123-456-789");
+        phoneBook.addContact("Mary", "987-654-321");
+        phoneBook.addContact("John", "111-222-333");
+        phoneBook.addContact("Alice", "444-555-666");
+        phoneBook.addContact("Mary", "777-888-999");
+        phoneBook.printSortedByNumberOfPhones();
+    }
+}
